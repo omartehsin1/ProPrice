@@ -40,8 +40,10 @@ public class RequestController {
             //construct the GCP REQUEST.
             AnnotateImageRequest request = gcpService.createRequest(productRequest.getEncoded_img());
 
+           // SSResponse responsev1 = gcpService.getResponse(request);
+
             //get response for request.
-            SSResponse response = gcpService.getResponse(request);
+            SSResponse response = gcpService.getResponseV2(request);
 
             //save picture async.
         //    loadPicturesService.savePicture(productRequest.getEncoded_img());

@@ -1,16 +1,27 @@
 package com.hackthe6ix.proprice.service;
 
 import com.google.cloud.vision.v1.*;
+import com.google.gson.Gson;
 import com.google.protobuf.ByteString;
 import com.hackthe6ix.proprice.domain.response.SSResponse;
 import com.hackthe6ix.proprice.utils.GCPConstants;
+import org.apache.http.HttpResponse;
+import org.apache.http.client.ClientProtocolException;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.entity.StringEntity;
+import org.apache.http.impl.client.HttpClientBuilder;
+import org.apache.http.impl.client.HttpClients;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
+import java.io.File;
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Base64;
@@ -42,7 +53,8 @@ public class GCPService {
                 String productSetPath =
                         ProductSearchClient.formatProductSetName(GCPConstants.GCP_PROJECT_ID, GCPConstants.GCP_REGION_NAME, GCPConstants.GCP_PRODUCT_SET_ID);
 
-                byte[] content = encoded_img.getBytes();
+                File img = new File("src/switch.jpg");
+                byte[] content = Files.readAllBytes(img.toPath());
 
                 // Create annotate image request along with product search feature.
                 Feature featuresElement = Feature.newBuilder().setType(Feature.Type.PRODUCT_SEARCH).build();
@@ -51,9 +63,9 @@ public class GCPService {
                         ImageContext.newBuilder()
                                 .setProductSearchParams(
                                         ProductSearchParams.newBuilder()
-                                                .setProductSet(productSetPath))
-//                                                .addProductCategories(GCPConstants.)
-//                                                .setFilter(filter))
+                                                .setProductSet(productSetPath)
+                                                .addProductCategories("apparel"))
+                                               // .setFilter(""))
                                 .build();
 
                 result = AnnotateImageRequest.newBuilder()
@@ -91,7 +103,31 @@ public class GCPService {
         }
 
         return ssResponse;
+    }
 
+    public SSResponse getResponseV2(AnnotateImageRequest request){
+
+        HttpClient httpClient = HttpClientBuilder.create().build();
+
+        try{
+            HttpPost postRequest = new HttpPost("https://vision.googleapis.com/v1/images:annotate");
+            postRequest.addHeader("Content-type", "application/json");
+            postRequest.addHeader("Authorization", "Bearer ya29.c.El9uBwiZLtChca3O2SSmwHQns6qg1JpEjMXRKV-w0LgoPQqNzwvZhXJVB_SKDDh93IQuuffN4As85bUmnQiDmHujrJzQE9ZLhQl6fyi0OtQZ_wqpT5fQMAdNuwnkO9C2eA");
+            Gson gson = new Gson();
+            StringEntity postString = new StringEntity(gson.toJson(request));
+            postRequest.setEntity(postString);
+            logger.debug("post request:::::::::::::" + postRequest);
+            HttpResponse response = httpClient.execute(postRequest);
+            System.out.println("RESPONSE!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!1" + response);
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        } catch (ClientProtocolException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return new SSResponse();
     }
 
     private int findProductKey(String name){
