@@ -1,0 +1,12 @@
+{
+  "type": "service_account",
+  "project_id": "smart-tracer-250813",
+  "private_key_id": "e21f19b66dd0f666e457799dad6320fbaba7f5cd",
+  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQC2dpOn6TdC41ml\n5dhV/Vis5kYVERNiCuFld0IMjJpm4i4qdopadL36+LxW2M0Fnc9z6lrjdgB9uTAe\n7qQeEEwtNWAdZVy54MjHd0vv9x5O+CpeHD+TcEXg5PCHdh5Hjt+ynEXZ2k8PF2bl\n3omIBIJxeM8yuWxADxfnhS6Wpfrc53F95WkcPOnRRux5RPYsDBKkN4xT/J0yLxs6\np5+1Dups8oHY37/9X8auqH4gmteAgnMpWFcEiRiWtZg/15/nS4y8vpKvVX8I6exr\nyLsAynBMdGTuXStBUvFW4q23oRenLEQ2cRDAfFX/x3RI9DV+a+zZhwIDvGtlsHvU\nywXCVI4vAgMBAAECggEAFFkH4V9IKtzot+/4XqqIk4uAgEPtue7FsQeKJZUeeN+7\nTz/18N14/D513meCAaDWLDKT3S7hIiQfQivRwIqHvDjqFY0iuJXhPiFHJiUUS7Ew\nJFuZGWuZV1mgmzKocMl1l9kGjyNh0qiE8JiPFMyP8XCMBreX41LrkwWOqv0qiyzR\nlbkpZUFpNXUutrdivwkW1xMFAwr8bblBqn3hNWB1rP/HMHimZOgvJCotgjXUU6UI\nHFJPOfJ8hevEvYvYT2VNtMG8S71hbScbmvZ9yDrdEAf9vw6xqoA7K+DUOR4R2Png\n89s/bg26jVJ5qJoLtwvugjZ40rl3J3UOp4swdaNAdQKBgQD4izZKZ0G+KCqGMJI/\nvwYEnL+EfgSt2YovEEqD0jRgtSCsDMiSGFRUJRCdVevAVwIxh2IFTEbZe7NCxVSy\nHo56O9tNpXsmdQD7WDmOcMcXMdWmuByWZ6XOTElOsyjSnecIWtoH2llApMGxdnDD\nHi2bEEydh8Yo3HvE8p//lBcWEwKBgQC779+KpdIng7AJCzQWuETYqKLiTSr4qAKy\nEDbDm3qT5SEvDn2+v/KX8826JIAraLalPTUxOPpn3Q1qHcpEjo22FKv1hsXmygJP\na8pqNBzffdERb6E3DolnD7aQLkPelBzDBX5df3KgrS3VWWpflJHXUvmo+VndjcUG\nTiV9Wdea9QKBgG5KiGr36yqQ9F3by+pRwD/ntuz6ZuUmtbUwy4A3lVqcxcTTX2XF\nOhak4/yNljIh6i1EYHDtajs0M1Yb7vujp6ICUczg9AcawLbIbbIRxac7TA3RgY4U\nrHUhUR6FTkY4H7+LYVk+wYB4HCO95UgQajh3QSheica0IJBDAlENzDjVAoGATFKL\nDuxunzt8pv+UxNFKrE437/10wQzCI3wwMVoX+q3nvwt8h5W+OHV7i+e84WQiIJLt\n4jKIhtuf0gONHDBkXpigiRKVljddntFgn6bQPvcCi7kw2IIfzOn1szIGwAKYd57o\nhaH3dEdAQM+SQoS8gZyh5Tx2gWJMrFXaJcDxrW0CgYEA6oJKh2i/jq0eQLWJegCX\nykh76GDVUpBrTcMB7dofhCQLMPeEMTNUXRJGZnajn+zhTN53x31w8sdPZkgjdpAf\noCiTLJIXrGq0Yej0rKJ4kpL+5XQsTEMUd3p/IUUOGoOFOAzUuzB174KgwS5mbV2c\nnfEu+3CGdV4T9iSJs8Q1ZeM=\n-----END PRIVATE KEY-----\n",
+  "client_email": "smart-tracer-250813@appspot.gserviceaccount.com",
+  "client_id": "103152179665263712654",
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+  "token_uri": "https://oauth2.googleapis.com/token",
+  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/smart-tracer-250813%40appspot.gserviceaccount.com"
+}
