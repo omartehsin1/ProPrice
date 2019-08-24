@@ -1,7 +1,15 @@
 package com.hackthe6ix.proprice.domain;
 
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
+
+@Entity
+@Table(name = "product")
 public class Product {
 
+    @Id
+    private int productId;
     private String productName;
     private String productImage;
     private Double price;

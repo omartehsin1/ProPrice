@@ -1,8 +1,6 @@
 package com.hackthe6ix.proprice.domain;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.util.List;
 
 @Entity
@@ -10,12 +8,16 @@ import java.util.List;
 public class Account {
 
     //Account info
+    @Id
+    @GeneratedValue
     private int userId;
+
     private String name;
     private String emailAddress;
     private String phoneNumber;
 
     //Product
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Product> productsSearched;
 
     public int getUserId() {
