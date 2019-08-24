@@ -77,6 +77,23 @@
 		</dependency>
 
 
+		<!--- cloud -->
+		<!-- https://mvnrepository.com/artifact/com.google.cloud/google-cloud-vision -->
+		<dependency>
+			<groupId>com.google.cloud</groupId>
+			<artifactId>google-cloud-vision</artifactId>
+			<version>1.88.0</version>
+		</dependency>
+
+		<dependency>
+			<groupId>com.google.cloud</groupId>
+			<artifactId>google-cloud-core</artifactId>
+			<version>1.88.0</version>
+		</dependency>
+
+
+
+
 	</dependencies>
 
 	<build>

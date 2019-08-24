@@ -1,7 +1,7 @@
 package com.hackthe6ix.proprice.controllers;
 
 import com.google.cloud.vision.v1.AnnotateImageRequest;
-import com.hackthe6ix.proprice.domain.request.GCPRequest;
+import com.google.cloud.vision.v1.AnnotateImageResponse;
 import com.hackthe6ix.proprice.domain.request.ProductRequest;
 import com.hackthe6ix.proprice.domain.response.SSResponse;
 import com.hackthe6ix.proprice.service.GCPService;
@@ -27,11 +27,11 @@ public class RequestController {
             AnnotateImageRequest request = gcpService.createRequest(productRequest.getEncoded_img());
 
             //get response for request.
+            SSResponse response = gcpService.getResponse(request);
 
-
-            return new ResponseEntity<SSResponse>(HttpStatus.OK);
+            return new ResponseEntity<>(response, HttpStatus.OK);
         }
 
-        return new ResponseEntity<SSResponse>(HttpStatus.BAD_REQUEST);
+        return new ResponseEntity<SSResponse>(new SSResponse(), HttpStatus.BAD_REQUEST);
     }
 }
