@@ -45,7 +45,6 @@ public class LoadPicturesService {
         return allImages;
     }
 
-    @Async
     public void savePicture(String encoded_image){
 
         Document doc = new Document("_id", UUID.randomUUID())

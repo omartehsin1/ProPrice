@@ -34,10 +34,16 @@ public class RequestController {
     @Autowired
     private LoadPicturesService loadPicturesService;
 
+    @GetMapping(value = "/heartbeat")
+    public ResponseEntity<String> heartbeat(){
+        return new ResponseEntity<>("ProPrice is alive!", HttpStatus.OK);
+    }
+
     @PostMapping(value = "/call_api")
     public ResponseEntity<SSResponse> mainRequest(@RequestBody ProductRequest productRequest){
 
-        if(productRequest != null && productRequest.getEncoded_img() != null){
+        if(productRequest != null && productRequest.getEncoded_img() != null
+            && gcpService.isBase64(productRequest.getEncoded_img())){
 
             //construct the GCP REQUEST.
             AnnotateImageRequest request = gcpService.createRequest(productRequest.getEncoded_img());
@@ -46,7 +52,7 @@ public class RequestController {
             SSResponse response = gcpService.getResponse(request);
 
             //save picture async.
-            loadPicturesService.savePicture(productRequest.getEncoded_img());
+        //    loadPicturesService.savePicture(productRequest.getEncoded_img());
 
             return new ResponseEntity<>(response, HttpStatus.OK);
         }
