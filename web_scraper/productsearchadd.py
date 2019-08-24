@@ -29,19 +29,19 @@ def import_product_sets(project_id, location, gcs_uri):
     result = response.result()
     print('Processing done.')
 
-    for i, status in enumerate(result.statuses):
-        print('Status of processing line {} of the csv: {}'.format(
-            i, status))
-        # Check the status of reference image
-        # `0` is the code for OK in google.rpc.Code.
-        if status.code == 0:
-            reference_image = result.reference_images[i]
-            print('hi')
-            print(reference_image)
-        else:
-            print('Status code not OK: {}'.format(status.message))
-        if i == 743:
-            break
+    # for i, status in enumerate(result.statuses):
+    #     print('Status of processing line {} of the csv: {}'.format(
+    #         i, status))
+    #     # Check the status of reference image
+    #     # `0` is the code for OK in google.rpc.Code.
+    #     if status.code == 0:
+    #         reference_image = result.reference_images[i]
+    #         print('hi')
+    #         print(reference_image)
+    #     else:
+    #         print('Status code not OK: {}'.format(status.message))
+    #     # if i == 743:
+    #     #     break
 
 if __name__ == "__main__":
     import_product_sets('smart-tracer-250813','us-east1','gs://labeled-images1234/reference.csv')
