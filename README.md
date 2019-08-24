@@ -9,10 +9,10 @@ Following instructions will allow for a copy of the project to run on your local
 Google Cloud Platform (GCP) Vision Product Search offers pre-trained machine learning models through REST and RPC APIs. It assign labels to images and quickly classify them into millions of predefined categories. For ProPrice, the Product Search API is specifically trained to detect objects from within our catalogue and identifies their similarities. 
 
 Vision API Demo with Converse 
-[Image of API Web Entities](Screen Shot 2019-08-24 at 2.08.19 PM.png)
+[Image of API Web Entities](https://github.com/preyansh98/ProPrice/blob/README-files-update/Screen%20Shot%202019-08-24%20at%202.08.19%20PM.png?raw=true)
 
 JSON Request & Response
-[Image of API JSON](Screen Shot 2019-08-24 at 2.08.37 PM.png)
+[Image of API JSON](https://github.com/preyansh98/ProPrice/blob/README-files-update/Screen%20Shot%202019-08-24%20at%202.08.37%20PM.png?raw=true)
 
 Google Maps Platform (GMP) Places API offers a service that returns information about places using HTTP requests. Places are defined within this API as establishments, geographic locations, or prominent points of interest. ProPrice identifies the nearest stores from the user that has their desired product in stock at the lowest price. Working along GMP,  Amazon Web Services (AWS) MongoDB, an open source, NoSQL database that provides support for JSON-styled, document-oriented storage systems, stores this catalogue information, images, and location information. 
 
