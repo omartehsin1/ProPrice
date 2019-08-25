@@ -1,19 +1,22 @@
 package com.hackthe6ix.proprice.service.retail;
 
+import com.google.api.client.http.HttpStatusCodes;
+import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
+import com.hackthe6ix.proprice.domain.response.ProductMapsResponse;
 import com.hackthe6ix.proprice.domain.response.RetailResponse;
-import com.hackthe6ix.proprice.utils.Keys;
 import com.hackthe6ix.proprice.utils.RetailConstants;
 import com.squareup.okhttp.*;
-import org.apache.http.client.utils.URIBuilder;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.net.URL;
-import java.net.URLEncoder;
+import java.util.List;
+import java.util.concurrent.CompletableFuture;
 
 @Service
 public class RetailService {
@@ -25,16 +28,48 @@ public class RetailService {
     }
 
     //Amazon API
-    public void queryAmazon(){
+    public RetailResponse queryAmazon(String searchTerm){
+        RetailResponse response = null;
 
-    }
+        try{
+            HttpUrl httpUrl = new HttpUrl.Builder()
+                                    .scheme("https")
+                                    .host(RetailConstants.AmazonConstants.AMAZON_RETAIL_ENDPOINT)
+                                    .addPathSegment("/api1")
+                                    .addPathSegment(searchTerm)
+                                    .build();
+
+            Request httpRequest = new Request.Builder()
+                                            .url(httpUrl)
+                                            .build();
+
+            Call call = httpClient.newCall(httpRequest);
+            System.out.println("CALLED MICROSERVICE FOR AMAZON PRICE: " + httpRequest);
+
+            Response httpResponse = call.execute();
+
+            if(httpResponse.code() == HttpStatusCodes.STATUS_CODE_OK) {
+
+                String json = httpResponse.body().string();
+                JsonArray jsonArray = new JsonParser().parse(json).getAsJsonArray();
+
+                response = new RetailResponse();
+                response.setRetail_type(RetailResponse.RETAIL_TYPE.AMAZON);
+                response.setPrice(jsonArray.get(0).getAsJsonObject().get("price").getAsString());
+            }
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+            return response;
+        }
 
 
-    //BestBuy API
+        //BestBuy API
     public RetailResponse queryBestBuy(String searchTerm) throws URISyntaxException, IOException {
         RetailResponse response = null;
 
-        String[] getWords = searchTerm.split(" ");
+        String[] getWords = searchTerm.split("-");
         StringBuilder sBuilder = new StringBuilder();
 
         //generate bestbuy endpoint
@@ -77,10 +112,5 @@ public class RetailService {
         String queryString= queryParam.toString();
         queryString = queryString.substring(0, queryString.length() - 1);
         return queryString;
-    }
-
-    //Walmart API
-    public void queryWalmart(){
-
     }
 }

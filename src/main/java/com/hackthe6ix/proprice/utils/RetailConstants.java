@@ -5,7 +5,7 @@ public class RetailConstants {
     private static final String WALMART_ENDPOINT = "http://api.walmartlabs.com/v1/search";
 
     public class AmazonConstants{
-        public static final String AMAZON_RETAIL_ENDPOINT = "";
+        public static final String AMAZON_RETAIL_ENDPOINT = "us-central1-smart-tracer-250813.cloudfunctions.net";
     }
 
     public class BestBuyConstants{
@@ -13,7 +13,4 @@ public class RetailConstants {
 
     }
 
-    public class WalmartConstants{
-        public static final String WALMART_RETAIL_ENDPOINT = "";
-    }
 }
