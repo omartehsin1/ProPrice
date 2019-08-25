@@ -7,6 +7,7 @@ import com.google.gson.JsonParser;
 import com.hackthe6ix.proprice.domain.request.PlacesRequest;
 import com.hackthe6ix.proprice.domain.response.ProductMapsResponse;
 import com.hackthe6ix.proprice.utils.GMapsConstants;
+import com.hackthe6ix.proprice.utils.Keys;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.CloseableHttpResponse;
@@ -14,6 +15,8 @@ import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.utils.URIBuilder;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.util.EntityUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import javax.swing.text.html.parser.Entity;
@@ -24,24 +27,22 @@ import java.nio.charset.StandardCharsets;
 @Service
 public class MapsService {
 
+    private static final Logger logger = LoggerFactory.getLogger(MapsService.class);
+
     public ProductMapsResponse queryPlaces(String productName, Double user_lat, Double user_long) throws URISyntaxException, IOException {
         ProductMapsResponse resp = null;
-        //set up request.
-        PlacesRequest placesRequest = new PlacesRequest();
-
-        placesRequest.setKey(GMapsConstants.GOOGLE_MAPS_API_KEY);
-        placesRequest.setInput(productName);
-        placesRequest.setInputType(GMapsConstants.GOOGLE_MAPS_INPUT_TYPE);
 
         HttpClient httpClient = HttpClients.createDefault();
 
         URIBuilder builder = new URIBuilder().setHost(GMapsConstants.GOOGLE_MAPS_ENDPOINT)
-                                        .setParameter("key", GMapsConstants.GOOGLE_MAPS_API_KEY)
+                                        .setParameter("key", Keys.GOOGLE_MAPS_API_KEY)
                                         .setParameter("input", productName)
                                         .setParameter("inputtype", GMapsConstants.GOOGLE_MAPS_INPUT_TYPE)
                                         .setParameter("fields", genFields(user_lat, user_long));
 
         HttpGet getRequest = new HttpGet(builder.build());
+
+        System.out.println("REQUEST::: " + getRequest.toString());
         HttpResponse httpResponse = httpClient.execute(getRequest);
 
         if(httpResponse.getStatusLine().getStatusCode() == HttpStatusCodes.STATUS_CODE_OK){
@@ -68,9 +69,12 @@ public class MapsService {
 
     private String genFields(Double user_lat, Double user_long){
         StringBuilder sBuilder = new StringBuilder();
-        sBuilder.append("\"geometry,formatted_address,name,opening_hours,rating&locationbias=circle:2000)@")
-                .append(String.valueOf(user_lat)).append(",")
-                .append(String.valueOf(user_long)).append("\"");
+
+        sBuilder.append("formatted_address,name,rating,opening_hours,geometry");
+
+//        sBuilder.append("geometry,formatted_address,name,opening_hours,rating&locationbias=circle:2000)@")
+//                .append((user_lat)).append(",")
+//                .append((user_long));
 
         return sBuilder.toString();
     }

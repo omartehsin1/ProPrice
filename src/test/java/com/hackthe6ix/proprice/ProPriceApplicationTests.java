@@ -4,7 +4,9 @@ import com.google.auth.oauth2.GoogleCredentials;
 import com.google.cloud.storage.StorageOptions;
 import com.google.common.collect.Lists;
 import com.google.gson.JsonParser;
+import com.hackthe6ix.proprice.domain.response.ProductMapsResponse;
 import com.hackthe6ix.proprice.service.GCPService;
+import com.hackthe6ix.proprice.service.MapsService;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +19,7 @@ import com.google.cloud.storage.Storage;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.net.URISyntaxException;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
@@ -25,8 +28,18 @@ public class ProPriceApplicationTests {
 	@Autowired
 	private GCPService gcpService;
 
+	@Autowired
+	private MapsService mapsService;
+
 	@Test
-	public void contextLoads() {
+	public void testMapsRequest() throws IOException, URISyntaxException {
+		String product = "nintendo switch";
+		Double lat = 43.6596426;
+		Double lng = -79.3998563;
+
+		ProductMapsResponse resp = mapsService.queryPlaces(product, lat, lng);
+
+		System.out.println(resp.getDest_lat());
 	}
 
 	public String getEncodedImage(){
