@@ -1,0 +1,6 @@
+framework module Pods_SensePrice {
+  umbrella header "Pods-SensePrice-umbrella.h"
+
+  export *
+  module * { export * }
+}

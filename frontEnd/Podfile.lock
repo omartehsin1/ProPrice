@@ -1,0 +1,34 @@
+PODS:
+  - Alamofire (4.8.2)
+  - EmptyDataSet-Swift (4.2.0)
+  - NVActivityIndicatorView (4.7.0):
+    - NVActivityIndicatorView/Presenter (= 4.7.0)
+  - NVActivityIndicatorView/Presenter (4.7.0)
+  - PMSuperButton (3.0.1)
+  - SwiftyJSON (4.3.0)
+
+DEPENDENCIES:
+  - Alamofire (~> 4.5)
+  - EmptyDataSet-Swift (~> 4.2.0)
+  - NVActivityIndicatorView
+  - PMSuperButton
+  - SwiftyJSON (~> 4.0)
+
+SPEC REPOS:
+  https://github.com/cocoapods/specs.git:
+    - Alamofire
+    - EmptyDataSet-Swift
+    - NVActivityIndicatorView
+    - PMSuperButton
+    - SwiftyJSON
+
+SPEC CHECKSUMS:
+  Alamofire: ae5c501addb7afdbb13687d7f2f722c78734c2d3
+  EmptyDataSet-Swift: 1fa0b35f530a35f852ecb2b53564728b0c300aaf
+  NVActivityIndicatorView: b19ddab2576f805cbe0fb2306cba3476e09a1dea
+  PMSuperButton: 2bef6f8659a5df969a69887f496ef309480c65eb
+  SwiftyJSON: 6faa0040f8b59dead0ee07436cbf76b73c08fd08
+
+PODFILE CHECKSUM: b3917a1ccccee38db9dfe815f0c83ce6586c4275
+
+COCOAPODS: 1.6.0
