@@ -1,9 +1,16 @@
 package com.hackthe6ix.proprice.service;
 
 import com.google.cloud.vision.v1.*;
+import com.google.gson.Gson;
 import com.google.protobuf.ByteString;
 import com.hackthe6ix.proprice.domain.response.SSResponse;
 import com.hackthe6ix.proprice.utils.GCPConstants;
+import org.apache.http.HttpResponse;
+import org.apache.http.client.ClientProtocolException;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.entity.StringEntity;
+import org.apache.http.impl.client.HttpClientBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,6 +18,8 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Base64;
@@ -51,9 +60,9 @@ public class GCPService {
                         ImageContext.newBuilder()
                                 .setProductSearchParams(
                                         ProductSearchParams.newBuilder()
-                                                .setProductSet(productSetPath))
-//                                                .addProductCategories(GCPConstants.)
-//                                                .setFilter(filter))
+                                                .setProductSet(productSetPath)
+                                                .addProductCategories("toys"))
+                                               // .setFilter(""))
                                 .build();
 
                 result = AnnotateImageRequest.newBuilder()
@@ -66,13 +75,15 @@ public class GCPService {
                 e.printStackTrace();
             }
 
-            logger.debug("JSON REQUEST CREATED::::: " + result);
             return result;
     }
 
     public SSResponse getResponse(AnnotateImageRequest request) {
+        List<AnnotateImageRequest> requests = new ArrayList<>();
+        requests.add(request);
+
         BatchAnnotateImagesResponse batchResponse =
-                imageClient.batchAnnotateImages(new ArrayList<>(Arrays.asList(request)));
+                imageClient.batchAnnotateImages(requests);
 
         List<ProductSearchResults.Result> similarProducts =
                 batchResponse.getResponses(0).getProductSearchResults().getResultsList();
@@ -82,19 +93,47 @@ public class GCPService {
         if(similarProducts!=null){
             similarProducts.stream().forEach(result -> {
                 ssResponse.setConfidence_score(result.getScore());
-                ssResponse.setProductName(result.getProduct().getDisplayName());
+                ssResponse.setProductName(findProductKey(result.getProduct().getName()));
 
                 //query db for price.
-                int productIDKey = findProductKey(result.getProduct().getName());
-                ssResponse.setProductPrice(priceDBService.getPriceFromDB(productIDKey));
+                //ssResponse.setProductPrice(priceDBService.getPriceFromDB(productIDKey));
             });
         }
 
         return ssResponse;
-
     }
 
-    private int findProductKey(String name){
+    public SSResponse getResponseV2(AnnotateImageRequest request){
+
+        HttpClient httpClient = HttpClientBuilder.create().build();
+
+        List<AnnotateImageRequest> requests = new ArrayList<>();
+        requests.add(request);
+        Gson gson = new Gson();
+
+        System.out.println("JSON REQUEST CREATED::::::::::::" + gson.toJson(requests));
+
+        try{
+            HttpPost postRequest = new HttpPost("https://vision.googleapis.com/v1/images:annotate");
+            postRequest.addHeader("Content-type", "application/json");
+            postRequest.addHeader("Authorization", "Bearer ya29.c.El9uBwiZLtChca3O2SSmwHQns6qg1JpEjMXRKV-w0LgoPQqNzwvZhXJVB_SKDDh93IQuuffN4As85bUmnQiDmHujrJzQE9ZLhQl6fyi0OtQZ_wqpT5fQMAdNuwnkO9C2eA");
+            StringEntity postString = new StringEntity(gson.toJson(requests));
+            postRequest.setEntity(postString);
+            System.out.println("post request:::::::::::::" + postRequest);
+            HttpResponse response = httpClient.execute(postRequest);
+            System.out.println("RESPONSE!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!1" + response);
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        } catch (ClientProtocolException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return new SSResponse();
+    }
+
+    private String findProductKey(String name){
         //projects/project-id/locations/location-id/products/product_id16
 
         StringBuilder sBuilder = new StringBuilder();
@@ -103,7 +142,7 @@ public class GCPService {
             sBuilder.append(name.charAt(i));
             i--;
         }
-        return Integer.valueOf(sBuilder.toString());
+        return (sBuilder.toString());
     }
 
     public boolean isBase64(String encoded_img){
