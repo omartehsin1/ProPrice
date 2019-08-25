@@ -71,7 +71,7 @@ public class RequestController {
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
-
+    @PostMapping(value = "/query_maps")
     public ResponseEntity<ProductMapsResponse> queryMaps(@RequestBody ProductMapsRequest productMapsRequest){
         ProductMapsResponse productMapsResponse = null;
 
