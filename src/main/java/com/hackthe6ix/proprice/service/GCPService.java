@@ -36,7 +36,7 @@ public class GCPService {
             HttpUrl httpUrl = new HttpUrl.Builder()
                     .scheme("http")
                     .host(GCPConstants.GCP_IDENTIFIER_MS_ENDPOINT)
-                    .addPathSegment("labelimage")
+                    .addPathSegment("labelImage")
                     .build();
 
             Gson gson = new Gson();
