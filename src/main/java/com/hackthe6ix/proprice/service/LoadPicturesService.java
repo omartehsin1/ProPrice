@@ -34,7 +34,7 @@ public class LoadPicturesService {
 //        String connectionString = String.format(template, username, password,
 //                    MongoConstants.MONGO_HOST+":"+MongoConstants.MONGO_PORT, readPreference);
 //
-        String connectionString = MongoConstants.MONGO_URI + "?retryWrites=true";
+        String connectionString = MongoConstants.MONGO_URI + "?retryWrites=false";
 
         MongoClientURI clientURI = new MongoClientURI(connectionString);
         client = new MongoClient(clientURI);

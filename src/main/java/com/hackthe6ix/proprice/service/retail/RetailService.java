@@ -8,6 +8,7 @@ import com.hackthe6ix.proprice.domain.response.ProductMapsResponse;
 import com.hackthe6ix.proprice.domain.response.RetailResponse;
 import com.hackthe6ix.proprice.utils.RetailConstants;
 import com.squareup.okhttp.*;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
@@ -34,11 +35,11 @@ public class RetailService {
 
         CompletableFuture<RetailResponse> amazonQuery = queryAmazon(searchTerm);
         CompletableFuture<RetailResponse> bestBuyQuery = queryBestBuy(searchTerm);
+        CompletableFuture<RetailResponse> walmartQuery = queryWalmart(searchTerm);
 
-        CompletableFuture.allOf(amazonQuery, bestBuyQuery).join();
+        CompletableFuture.allOf(amazonQuery, bestBuyQuery, walmartQuery).join();
 
         return Arrays.asList(amazonQuery.get(), bestBuyQuery.get());
-
     }
 
     //Amazon API
@@ -119,6 +120,44 @@ public class RetailService {
             }
         }
 
+        return CompletableFuture.completedFuture(response);
+    }
+
+    //Walmart API
+    @Async
+    public CompletableFuture<RetailResponse> queryWalmart(String searchTerm){
+        RetailResponse response = null;
+
+        try{
+            HttpUrl httpUrl = new HttpUrl.Builder()
+                    .scheme("https")
+                    .host(RetailConstants.WalmartConstants.WALMART_RETAIL_ENDPOINT)
+                    .addPathSegment("api2")
+                    .addPathSegment(searchTerm)
+                    .build();
+
+            Request httpRequest = new Request.Builder()
+                    .url(httpUrl)
+                    .build();
+
+            Call call = httpClient.newCall(httpRequest);
+            System.out.println("CALLED MICROSERVICE FOR WALMART PRICE: " + httpRequest);
+
+            Response httpResponse = call.execute();
+
+            if(httpResponse.code() == HttpStatusCodes.STATUS_CODE_OK) {
+
+                String json = httpResponse.body().string();
+                JsonArray jsonArray = new JsonParser().parse(json).getAsJsonArray();
+
+                response = new RetailResponse();
+                response.setRetail_type(RetailResponse.RETAIL_TYPE.WALMART);
+                response.setPrice(jsonArray.get(0).getAsJsonObject().get("price").getAsString());
+            }
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         return CompletableFuture.completedFuture(response);
     }
 

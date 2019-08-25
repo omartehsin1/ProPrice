@@ -3,7 +3,7 @@ package com.hackthe6ix.proprice.domain.response;
 public class RetailResponse {
 
     public enum RETAIL_TYPE {
-        BEST_BUY, AMAZON, MACYS;
+        BEST_BUY, AMAZON, WALMART;
     }
 
     public String price;
