@@ -20,6 +20,9 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.URISyntaxException;
+import java.security.KeyManagementException;
+import java.security.KeyStoreException;
+import java.security.NoSuchAlgorithmException;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
@@ -32,14 +35,14 @@ public class ProPriceApplicationTests {
 	private MapsService mapsService;
 
 	@Test
-	public void testMapsRequest() throws IOException, URISyntaxException {
+	public void testMapsRequest() throws IOException, URISyntaxException, NoSuchAlgorithmException, KeyStoreException, KeyManagementException {
 		String product = "nintendo switch";
 		Double lat = 43.6596426;
 		Double lng = -79.3998563;
 
 		ProductMapsResponse resp = mapsService.queryPlaces(product, lat, lng);
 
-		System.out.println(resp.getDest_lat());
+		System.out.println(resp.getName());
 	}
 
 	public String getEncodedImage(){

@@ -1,38 +1,32 @@
 package com.hackthe6ix.proprice.service;
 
 import com.google.api.client.http.HttpStatusCodes;
-import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
-import com.hackthe6ix.proprice.domain.request.PlacesRequest;
 import com.hackthe6ix.proprice.domain.response.ProductMapsResponse;
 import com.hackthe6ix.proprice.utils.GMapsConstants;
 import com.hackthe6ix.proprice.utils.Keys;
-import org.apache.http.HttpResponse;
-import org.apache.http.client.HttpClient;
-import org.apache.http.client.methods.CloseableHttpResponse;
-import org.apache.http.client.methods.HttpGet;
+import com.squareup.okhttp.*;
 import org.apache.http.client.utils.URIBuilder;
-import org.apache.http.impl.client.HttpClients;
-import org.apache.http.util.EntityUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
-import javax.swing.text.html.parser.Entity;
 import java.io.IOException;
 import java.net.URISyntaxException;
-import java.nio.charset.StandardCharsets;
+import java.security.KeyManagementException;
+import java.security.KeyStoreException;
+import java.security.NoSuchAlgorithmException;
 
 @Service
 public class MapsService {
 
     private static final Logger logger = LoggerFactory.getLogger(MapsService.class);
 
-    public ProductMapsResponse queryPlaces(String productName, Double user_lat, Double user_long) throws URISyntaxException, IOException {
+    public ProductMapsResponse queryPlaces(String productName, Double user_lat, Double user_long) throws URISyntaxException, IOException, KeyStoreException, NoSuchAlgorithmException, KeyManagementException {
         ProductMapsResponse resp = null;
 
-        HttpClient httpClient = HttpClients.createDefault();
+        OkHttpClient httpClient = new OkHttpClient();
 
         URIBuilder builder = new URIBuilder().setHost(GMapsConstants.GOOGLE_MAPS_ENDPOINT)
                                         .setParameter("key", Keys.GOOGLE_MAPS_API_KEY)
@@ -40,14 +34,33 @@ public class MapsService {
                                         .setParameter("inputtype", GMapsConstants.GOOGLE_MAPS_INPUT_TYPE)
                                         .setParameter("fields", genFields(user_lat, user_long));
 
-        HttpGet getRequest = new HttpGet(builder.build());
+        HttpUrl httpUrl = new HttpUrl.Builder()
+                .scheme("https")
+                .host("maps.googleapis.com")
+                .addPathSegment("maps")
+                .addPathSegment("api")
+                .addPathSegment("place")
+                .addPathSegment("findplacefromtext")
+                .addPathSegment("json")
+                .addQueryParameter("key", Keys.GOOGLE_MAPS_API_KEY)
+                .addQueryParameter("input", productName)
+                .addQueryParameter("inputtype", GMapsConstants.GOOGLE_MAPS_INPUT_TYPE)
+                .addQueryParameter("fields", genFields(user_lat, user_long))
+                .build();
 
-        System.out.println("REQUEST::: " + getRequest.toString());
-        HttpResponse httpResponse = httpClient.execute(getRequest);
+        Request request = new Request.Builder()
+                .addHeader("accept", "application/json")
+                .url(httpUrl)
+                .build();
 
-        if(httpResponse.getStatusLine().getStatusCode() == HttpStatusCodes.STATUS_CODE_OK){
+        Call call = httpClient.newCall(request);
+        System.out.println("REQUEST::: " + request.toString());
 
-            String json = EntityUtils.toString(httpResponse.getEntity(), StandardCharsets.UTF_8);
+        Response httpResponse = call.execute();
+
+        if(httpResponse.code() == HttpStatusCodes.STATUS_CODE_OK){
+
+            String json = httpResponse.body().string();
             JsonObject jsonObject = new JsonParser().parse(json).getAsJsonObject();
 
             ProductMapsResponse responseToFE = new ProductMapsResponse();
