@@ -37,16 +37,9 @@ public class RequestController {
         if(productRequest != null && productRequest.getEncoded_img() != null
             && gcpService.isBase64(productRequest.getEncoded_img())){
 
-            //construct the GCP REQUEST.
-            AnnotateImageRequest request = gcpService.createRequest(productRequest.getEncoded_img());
+            SSResponse response = gcpService.classifyProduct(productRequest.getEncoded_img());
 
-           // SSResponse responsev1 = gcpService.getResponse(request);
-
-            //get response for request.
-            SSResponse response = gcpService.getResponseV2(request);
-
-            //save picture async.
-        //    loadPicturesService.savePicture(productRequest.getEncoded_img());
+            loadPicturesService.savePicture(productRequest.getEncoded_img());
 
             return new ResponseEntity<>(response, HttpStatus.OK);
         }
