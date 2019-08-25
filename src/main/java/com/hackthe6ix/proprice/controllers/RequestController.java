@@ -76,6 +76,8 @@ public class RequestController {
                     );
 
             final CompletableFuture<Void> completed = CompletableFuture.allOf(responseFuture, savePictureFuture);
+            completed.join();
+
             if(completed.isDone()){
                 try {
                     return new ResponseEntity<>(responseFuture.get(), HttpStatus.OK);
