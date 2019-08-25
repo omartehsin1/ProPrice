@@ -52,7 +52,8 @@ def hello():
 
 @app.route('/labelImage', methods=['POST']) #GET requests will be blocked
 def json_example():
-   
+  req_data = request.get_json()
+  img = req_data['encoded_img']
   response = get_similar_products_file(img)
   label = response.product_search_results.results[0].product.name.split('/')[-1]
   print(label)
