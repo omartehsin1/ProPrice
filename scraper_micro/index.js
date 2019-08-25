@@ -5,10 +5,12 @@ const port = 3000;
 
 app.get("/:item", (req, res) => {
   item = req.params.item;
-  res.json(hashList[item])
+  res.json(hashList[item]);
 });
 
-app.listen(port, () => console.log("Gator app listening on port 3000!"));
+app.listen(process.env.PORT || port, () =>
+  console.log("Gator app listening on port 3000!")
+);
 
 // (async () => {
 //   const browser = await puppeteer.launch();
@@ -484,7 +486,8 @@ let hashList = {
   ],
   yeezys: [
     {
-      name: 'SPLSPORT Yeezys Boost 350 V2 Sport Running Lightweight Casual Sneaker',
+      name:
+        "SPLSPORT Yeezys Boost 350 V2 Sport Running Lightweight Casual Sneaker",
       price: 67
     },
     {
@@ -496,15 +499,16 @@ let hashList = {
       price: 91
     },
     {
-      name: "Sherwood Yeezy Boost 350 V2 Black Red- Sport Running Lightweight Sneaker",
+      name:
+        "Sherwood Yeezy Boost 350 V2 Black Red- Sport Running Lightweight Sneaker",
       price: 59
     },
     {
-      name: 'Adicas Men\'s Women\'s Lightweight Sneakers Fashion Running Shoes ',
+      name: "Adicas Men's Women's Lightweight Sneakers Fashion Running Shoes ",
       price: 58
     },
     {
-      name: 'Adidas Mens Yeezy Boost 350 Turtle/Blue-Gray Fabric',
+      name: "Adidas Mens Yeezy Boost 350 Turtle/Blue-Gray Fabric",
       price: 425
     }
   ]
