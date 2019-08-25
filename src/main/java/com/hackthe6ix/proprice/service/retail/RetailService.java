@@ -1,26 +1,27 @@
 package com.hackthe6ix.proprice.service.retail;
 
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
+import com.hackthe6ix.proprice.domain.response.RetailResponse;
 import com.hackthe6ix.proprice.utils.Keys;
 import com.hackthe6ix.proprice.utils.RetailConstants;
-import org.apache.http.HttpResponse;
-import org.apache.http.client.HttpClient;
-import org.apache.http.client.methods.HttpGet;
+import com.squareup.okhttp.*;
 import org.apache.http.client.utils.URIBuilder;
-import org.apache.http.impl.client.HttpClients;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
 import java.io.IOException;
 import java.net.URISyntaxException;
+import java.net.URL;
+import java.net.URLEncoder;
 
 @Service
 public class RetailService {
 
-    private static HttpClient client;
-
+    private static OkHttpClient httpClient;
     @PostConstruct
     private void init(){
-        client = HttpClients.createDefault();
+        httpClient = new OkHttpClient();
     }
 
     //Amazon API
@@ -30,33 +31,45 @@ public class RetailService {
 
 
     //BestBuy API
-
-    /*
-    Sample:: "https://api.bestbuy.com/v1/products(search=oven&search=stainless&search=steel)?format=json&show=sku,name,salePrice&apiKey=YourAPIKey"
-     */
-    public void queryBestBuy(String searchTerm) throws URISyntaxException, IOException {
+    public RetailResponse queryBestBuy(String searchTerm) throws URISyntaxException, IOException {
+        RetailResponse response = null;
 
         String[] getWords = searchTerm.split(" ");
         StringBuilder sBuilder = new StringBuilder();
 
         //generate bestbuy endpoint
-        sBuilder.append(RetailConstants.BestBuyConstants.BESTBUY_RETAIL_ENDPOINT).append("(").append(genSearchParams(getWords)).append(")");
+        sBuilder.append("(").append(genSearchParams(getWords)).append(")");
 
-        URIBuilder builder = new URIBuilder().setHost(sBuilder.toString())
-                .setParameter("format", "json")
-                .setParameter("show", "sku,name,salePrice")
-                .setParameter("apiKey" , RetailConstants.BestBuyConstants.BESTBUY_RETAIL_ENDPOINT);
+        String firstPart = RetailConstants.BestBuyConstants.BESTBUY_RETAIL_ENDPOINT + sBuilder.toString();
 
-        HttpGet getRequest = new HttpGet(builder.build());
+        sBuilder = new StringBuilder();
+        sBuilder.append("?format=json&show=sku%2Cname%2CsalePrice&apiKey=3blstprFHKBAvXqWGKNLC1cw");
 
-        System.out.println("BEST BUY REQ: " + getRequest);
+        String finalUrl = firstPart + sBuilder.toString();
+        URL httpURL = new URL(finalUrl);
 
-        HttpResponse httpResponse = client.execute(getRequest);
+        Request request = new Request.Builder()
+                .url(httpURL)
+                .build();
 
-        System.out.println(httpResponse.getStatusLine().getStatusCode());
+        System.out.println("BEST BUY REQUEST::: " + request.toString());
+
+        Call call = httpClient.newCall(request);
+        Response httpResponse = call.execute();
+
+        if(httpResponse.isSuccessful()){
+            String jsonString = httpResponse.body().string();
+            JsonObject jsonObject = new JsonParser().parse(jsonString).getAsJsonObject();
+
+            response = new RetailResponse();
+            response.setRetail_type(RetailResponse.RETAIL_TYPE.BEST_BUY);
+            response.setPrice(jsonObject.get("products").getAsJsonArray().get(0).getAsJsonObject().get("salePrice").getAsString());
+        }
+
+        return response;
     }
 
-    private String genSearchParams(String[] words){
+    public String genSearchParams(String[] words){
         StringBuilder queryParam = new StringBuilder();
         for(String s : words){
             queryParam.append("search").append("=").append(s).append("&");
