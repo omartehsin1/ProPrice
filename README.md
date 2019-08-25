@@ -21,5 +21,5 @@ Amazon Web Servics (AWS) Product Advertising API offers developers access to the
 * [GMP Places](https://developers.google.com/places/web-service/search) - Location/Map Services
 * [AWS MongoDB](https://docs.aws.amazon.com/quickstart/latest/mongodb/overview.html) - Open Source Database
 * [AWS Product Advertising](https://docs.aws.amazon.com/AWSECommerceService/latest/DG/EX_RetrievingPriceInformation.html) - Amazon Product Advertising
-* [Walmart Labs Product Lookup](https://developer.walmartlabs.com/docs/read/Search_API_IR_V2) - Walmart Labs
-* [Best Buy Keyword Search](https://bestbuyapis.github.io/api-documentation/#keyword-search-function) - Best Buy API
+* [Walmart Labs](https://developer.walmartlabs.com/docs/read/Search_API_IR_V2) - Product Lookup
+* [Best Buy](https://bestbuyapis.github.io/api-documentation/#keyword-search-function) - Keyword Search
