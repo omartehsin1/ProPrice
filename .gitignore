@@ -25,7 +25,17 @@ hs_err_pid*
 web_scraper/dataset
 web_scraper/.vscode
 
+package-lock.json
+node_modules/
+
 
 .idea
 .mvn
 target/
+
+Include/
+Lib/
+Scripts/
+tcl/
+requirement.txt.txt
+temp.png
