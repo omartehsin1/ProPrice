@@ -1,4 +1,4 @@
-# Compiled class file
+﻿# Compiled class file
 *.class
 .classpath
 .project
@@ -37,15 +37,15 @@ node_modules/
 # gitignore contributors: remember to update Global/Xcode.gitignore, Objective-C.gitignore & Swift.gitignore
 ​
 ## User settings
-xcuserdata/
+frontEnd/xcuserdata/
 ​
 ## compatibility with Xcode 8 and earlier (ignoring not required starting Xcode 9)
 *.xcscmblueprint
 *.xccheckout
 ​
 ## compatibility with Xcode 3 and earlier (ignoring not required starting Xcode 4)
-build/
-DerivedData/
+frontEnd/build/
+frontEnd/DerivedData/
 *.moved-aside
 *.pbxuser
 !default.pbxuser
@@ -65,8 +65,8 @@ DerivedData/
 *.dSYM
 ​
 ## Playgrounds
-timeline.xctimeline
-playground.xcworkspace
+frontEnd/timeline.xctimeline
+frontEnd/playground.xcworkspace
 ​
 # Swift Package Manager
 #
@@ -80,7 +80,7 @@ playground.xcworkspace
 # hence it is not needed unless you have added a package configuration file to your project
 # .swiftpm
 ​
-.build/
+frontEnd/.build/
 ​
 # CocoaPods
 #
@@ -98,11 +98,11 @@ playground.xcworkspace
 # Add this line if you want to avoid checking in source code from Carthage dependencies.
 # Carthage/Checkouts
 ​
-Carthage/Build/
+frontEnd/Carthage/Build/
 ​
 # Accio dependency management
-Dependencies/
-.accio/
+frontEnd/Dependencies/
+frontEnd/.accio/
 ​
 # fastlane
 #
@@ -121,7 +121,7 @@ fastlane/test_output
 # After new code Injection tools there's a generated folder /iOSInjectionProject
 # https://github.com/johnno1962/injectionforxcode
 ​
-iOSInjectionProject/
+frontEnd/iOSInjectionProject/
 
 .idea
 .mvn
