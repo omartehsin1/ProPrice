@@ -6,10 +6,10 @@ import com.mongodb.client.FindIterable;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
 import org.bson.Document;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -52,14 +52,14 @@ public class LoadPicturesService {
         iterable.forEach(new Block<Document>() {
             @Override
             public void apply(Document document) {
-                    allImages.add(document.get("_image").toString());
+                allImages.add(document.get("_image").toString());
             }
         });
 
         return allImages;
     }
 
-    public void savePicture(String encoded_image) throws IOException {
+    public void savePicture(String encoded_image){
 
         Document doc = new Document("_id", UUID.randomUUID())
                             .append("_image", encoded_image);

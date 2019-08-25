@@ -21,7 +21,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import javax.xml.ws.Response;
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.security.KeyManagementException;
@@ -58,36 +57,11 @@ public class RequestController {
         if (productRequest != null && productRequest.getEncoded_img() != null
                 && gcpService.isBase64(productRequest.getEncoded_img())) {
 
-            final CompletableFuture<SSResponse> responseFuture = CompletableFuture.supplyAsync(() ->
-                    gcpService.classifyProduct(productRequest.getEncoded_img()));
+            SSResponse response = gcpService.classifyProduct(productRequest.getEncoded_img());
+            System.out.println(response.getProductName());
+            loadPicturesService.savePicture(productRequest.getEncoded_img());
 
-            final CompletableFuture<Boolean> savePictureFuture = CompletableFuture.supplyAsync(() ->
-                    {
-                        Boolean returnBool = true;
-                        try {
-                            loadPicturesService.savePicture(productRequest.getEncoded_img());
-                        } catch (Exception e){
-                            returnBool = false;
-                            throw new RuntimeException(e.getMessage());
-
-                        }
-                        return returnBool;
-                    }
-                    );
-
-            final CompletableFuture<Void> completed = CompletableFuture.allOf(responseFuture, savePictureFuture);
-            completed.join();
-
-            if(completed.isDone()){
-                try {
-                    return new ResponseEntity<>(responseFuture.get(), HttpStatus.OK);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                } catch (ExecutionException e) {
-                    e.printStackTrace();
-                }
-            }
-            return new ResponseEntity<>(new SSResponse(), HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>(response, HttpStatus.OK);
         }
 
         return new ResponseEntity<SSResponse>(new SSResponse(), HttpStatus.BAD_REQUEST);
