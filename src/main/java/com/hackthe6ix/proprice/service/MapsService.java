@@ -28,12 +28,6 @@ public class MapsService {
 
         OkHttpClient httpClient = new OkHttpClient();
 
-        URIBuilder builder = new URIBuilder().setHost(GMapsConstants.GOOGLE_MAPS_ENDPOINT)
-                                        .setParameter("key", Keys.GOOGLE_MAPS_API_KEY)
-                                        .setParameter("input", productName)
-                                        .setParameter("inputtype", GMapsConstants.GOOGLE_MAPS_INPUT_TYPE)
-                                        .setParameter("fields", genFields(user_lat, user_long));
-
         HttpUrl httpUrl = new HttpUrl.Builder()
                 .scheme("https")
                 .host("maps.googleapis.com")
@@ -45,7 +39,8 @@ public class MapsService {
                 .addQueryParameter("key", Keys.GOOGLE_MAPS_API_KEY)
                 .addQueryParameter("input", productName)
                 .addQueryParameter("inputtype", GMapsConstants.GOOGLE_MAPS_INPUT_TYPE)
-                .addQueryParameter("fields", genFields(user_lat, user_long))
+                .addQueryParameter("fields", "geometry,formatted_address,name,opening_hours,rating")
+                .addQueryParameter("locationbias", genLocationBias(user_lat, user_long))
                 .build();
 
         Request request = new Request.Builder()
@@ -80,14 +75,10 @@ public class MapsService {
         return resp;
     }
 
-    private String genFields(Double user_lat, Double user_long){
+    private String genLocationBias(Double user_lat, Double user_long){
         StringBuilder sBuilder = new StringBuilder();
 
-        sBuilder.append("formatted_address,name,rating,opening_hours,geometry");
-
-//        sBuilder.append("geometry,formatted_address,name,opening_hours,rating&locationbias=circle:2000)@")
-//                .append((user_lat)).append(",")
-//                .append((user_long));
+        sBuilder.append("circle:2000@").append(user_lat).append(",").append(user_long);
 
         return sBuilder.toString();
     }

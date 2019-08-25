@@ -44,7 +44,7 @@ public class ProPriceApplicationTests {
 
 	@Test
 	public void testMapsRequest() throws IOException, URISyntaxException, NoSuchAlgorithmException, KeyStoreException, KeyManagementException {
-		String product = "nintendo switch";
+		String product = "yeezy";
 		Double lat = 43.6596426;
 		Double lng = -79.3998563;
 

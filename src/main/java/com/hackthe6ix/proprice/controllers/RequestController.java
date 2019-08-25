@@ -49,7 +49,7 @@ public class RequestController {
             && gcpService.isBase64(productRequest.getEncoded_img())){
 
             SSResponse response = gcpService.classifyProduct(productRequest.getEncoded_img());
-
+            System.out.println(response.getProductName());
             loadPicturesService.savePicture(productRequest.getEncoded_img());
 
             return new ResponseEntity<>(response, HttpStatus.OK);
