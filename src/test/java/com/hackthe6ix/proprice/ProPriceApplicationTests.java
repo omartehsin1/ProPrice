@@ -1,6 +1,7 @@
 package com.hackthe6ix.proprice;
 
 import com.hackthe6ix.proprice.domain.response.RetailResponse;
+import com.hackthe6ix.proprice.service.LoadPicturesService;
 import com.hackthe6ix.proprice.service.retail.RetailService;
 import com.google.auth.oauth2.GoogleCredentials;
 import com.google.cloud.storage.StorageOptions;
@@ -49,6 +50,9 @@ public class ProPriceApplicationTests {
 	@Autowired
 	private MapsService mapsService;
 
+	@Autowired
+	private LoadPicturesService loadPicturesService;
+
 
 	@Test
 	public void testMapsRequest() throws IOException, URISyntaxException, NoSuchAlgorithmException, KeyStoreException, KeyManagementException {
@@ -95,15 +99,8 @@ public class ProPriceApplicationTests {
 
 	@Test
 	public void testMongo(){
-		String connectionString = MongoConstants.MONGO_URI;
 
-		MongoClientURI clientURI = new MongoClientURI(connectionString);
-		MongoClient client = new MongoClient(clientURI);
-		MongoDatabase db = client.getDatabase(MongoConstants.MONGO_DB_NAME);
-		MongoCollection imageCollection = db.getCollection(MongoConstants.MONGO_COLLECTION_NAME);
-
-		System.out.println("NUMBER OF DOCS:>>>>>>>>>>>>>>>>>" + imageCollection.estimatedDocumentCount());
-
+		loadPicturesService.loadPictures();
 	}
 
 	public String getEncodedImage(){
