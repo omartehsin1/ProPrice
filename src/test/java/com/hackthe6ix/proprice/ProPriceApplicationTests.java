@@ -10,6 +10,10 @@ import com.hackthe6ix.proprice.domain.response.ProductMapsResponse;
 import com.hackthe6ix.proprice.service.GCPService;
 import com.hackthe6ix.proprice.service.MapsService;
 import com.hackthe6ix.proprice.utils.MongoConstants;
+import com.mongodb.MongoClient;
+import com.mongodb.MongoClientURI;
+import com.mongodb.client.MongoCollection;
+import com.mongodb.client.MongoDatabase;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -74,6 +78,8 @@ public class ProPriceApplicationTests {
 
 		String product = "yeezys";
 
+		MongoConstants.MONGO_URI = "mongodb://heroku_fwdx895q:s9nehu782vuta87notiiarog50@ds261486.mlab.com:61486/heroku_fwdx895q";
+
 		try {
 			retailService.queryRetailStores(product).forEach(System.out::println);
 		} catch (IOException e) {
@@ -85,6 +91,19 @@ public class ProPriceApplicationTests {
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
+	}
+
+	@Test
+	public void testMongo(){
+		String connectionString = MongoConstants.MONGO_URI;
+
+		MongoClientURI clientURI = new MongoClientURI(connectionString);
+		MongoClient client = new MongoClient(clientURI);
+		MongoDatabase db = client.getDatabase(MongoConstants.MONGO_DB_NAME);
+		MongoCollection imageCollection = db.getCollection(MongoConstants.MONGO_COLLECTION_NAME);
+
+		System.out.println("NUMBER OF DOCS:>>>>>>>>>>>>>>>>>" + imageCollection.estimatedDocumentCount());
+
 	}
 
 	public String getEncodedImage(){

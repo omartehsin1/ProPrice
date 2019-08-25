@@ -50,7 +50,7 @@ public class RetailService {
             HttpUrl httpUrl = new HttpUrl.Builder()
                                     .scheme("https")
                                     .host(RetailConstants.AmazonConstants.AMAZON_RETAIL_ENDPOINT)
-                                    .addPathSegment("/api1")
+                                    .addPathSegment("api1")
                                     .addPathSegment(searchTerm)
                                     .build();
 
@@ -113,7 +113,10 @@ public class RetailService {
 
             response = new RetailResponse();
             response.setRetail_type(RetailResponse.RETAIL_TYPE.BEST_BUY);
-            response.setPrice(jsonObject.get("products").getAsJsonArray().get(0).getAsJsonObject().get("salePrice").getAsString());
+
+            if(jsonObject!=null && jsonObject.get("products")!=null && jsonObject.get("products").getAsJsonArray().size()>0){
+                response.setPrice(jsonObject.get("products").getAsJsonArray().get(0).getAsJsonObject().get("salePrice").getAsString());
+            }
         }
 
         return CompletableFuture.completedFuture(response);
