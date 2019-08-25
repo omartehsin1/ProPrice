@@ -32,3 +32,10 @@ node_modules/
 .idea
 .mvn
 target/
+
+Include/
+Lib/
+Scripts/
+tcl/
+requirement.txt.txt
+temp.png
