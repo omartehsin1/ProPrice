@@ -24,15 +24,17 @@ public class LoadPicturesService {
     @PostConstruct
     private void init(){
 
-        System.setProperty("javax.net.ssl.trustStore", "src/main/resources/rds-ca-certs");
-        System.setProperty("javax.net.ssl.trustStorePassword", "mongopassword");
-
-        String template = "mongodb://%s:%s@%s/test?ssl=true&replicaSet=rs0&readpreference=%s";
-        String username = "mongouser";
-        String password = "mongopassword";
-        String readPreference = "secondaryPreferred";
-        String connectionString = String.format(template, username, password,
-                    MongoConstants.MONGO_HOST+":"+MongoConstants.MONGO_PORT, readPreference);
+//        System.setProperty("javax.net.ssl.trustStore", "src/main/resources/rds-ca-certs");
+//        System.setProperty("javax.net.ssl.trustStorePassword", "mongopassword");
+//
+//        String template = "mongodb://%s:%s@%s/test?ssl=true&replicaSet=rs0&readpreference=%s";
+//        String username = "mongouser";
+//        String password = "mongopassword";
+//        String readPreference = "secondaryPreferred";
+//        String connectionString = String.format(template, username, password,
+//                    MongoConstants.MONGO_HOST+":"+MongoConstants.MONGO_PORT, readPreference);
+//
+        String connectionString = MongoConstants.MONGO_URI;
 
         MongoClientURI clientURI = new MongoClientURI(connectionString);
         client = new MongoClient(clientURI);

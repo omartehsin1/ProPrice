@@ -15,8 +15,11 @@ import javax.annotation.PostConstruct;
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ExecutionException;
 
 @Service
 public class RetailService {
@@ -27,8 +30,20 @@ public class RetailService {
         httpClient = new OkHttpClient();
     }
 
+    public List<RetailResponse> queryRetailStores(String searchTerm) throws IOException, URISyntaxException, ExecutionException, InterruptedException {
+
+        CompletableFuture<RetailResponse> amazonQuery = queryAmazon(searchTerm);
+        CompletableFuture<RetailResponse> bestBuyQuery = queryBestBuy(searchTerm);
+
+        CompletableFuture.allOf(amazonQuery, bestBuyQuery).join();
+
+        return Arrays.asList(amazonQuery.get(), bestBuyQuery.get());
+
+    }
+
     //Amazon API
-    public RetailResponse queryAmazon(String searchTerm){
+    @Async
+    public CompletableFuture<RetailResponse> queryAmazon(String searchTerm){
         RetailResponse response = null;
 
         try{
@@ -61,12 +76,12 @@ public class RetailService {
         } catch (IOException e) {
             e.printStackTrace();
         }
-            return response;
+            return CompletableFuture.completedFuture(response);
         }
 
-
         //BestBuy API
-    public RetailResponse queryBestBuy(String searchTerm) throws URISyntaxException, IOException {
+    @Async
+    public CompletableFuture<RetailResponse> queryBestBuy(String searchTerm) throws URISyntaxException, IOException {
         RetailResponse response = null;
 
         String[] getWords = searchTerm.split("-");
@@ -101,7 +116,7 @@ public class RetailService {
             response.setPrice(jsonObject.get("products").getAsJsonArray().get(0).getAsJsonObject().get("salePrice").getAsString());
         }
 
-        return response;
+        return CompletableFuture.completedFuture(response);
     }
 
     public String genSearchParams(String[] words){
