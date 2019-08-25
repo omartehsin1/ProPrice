@@ -39,7 +39,7 @@ public class RetailService {
 
         CompletableFuture.allOf(amazonQuery, bestBuyQuery, walmartQuery).join();
 
-        return Arrays.asList(amazonQuery.get(), bestBuyQuery.get());
+        return Arrays.asList(amazonQuery.get(), bestBuyQuery.get(), walmartQuery.get());
     }
 
     //Amazon API
