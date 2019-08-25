@@ -83,32 +83,18 @@ def list_reference_images(project_id, location, product_id):
         print('Reference image bounding polygons: {}'.format(
             image.bounding_polys))
 
-def get_similar_products_file(file_path):
+def get_similar_products_file(base64IMG):
     project_id='smart-tracer-250813'
     location='us-east1'
     product_set_id='hack6'
     product_category='toys'
-
-    """Search similar products to image.
-    Args:
-        project_id: Id of the project.
-        location: A compute region name.
-        product_set_id: Id of the product set.
-        product_category: Category of the product.
-        file_path: Local file path of the image to be searched.
-        filter: Condition to be applied on the labels.
-        Example for filter: (color = red OR color = blue) AND style = kids
-        It will search on all products with the following labels:
-        color:red AND style:kids
-        color:blue AND style:kids
-    """
+    
     # product_search_client is needed only for its helper methods.
     product_search_client = vision.ProductSearchClient()
     image_annotator_client = vision.ImageAnnotatorClient()
 
     # Read the image as a stream of bytes.
-    with open(file_path, 'rb') as image_file:
-        content = image_file.read()
+    content = base64IMG
 
     # Create annotate image request along with product search feature.
     image = vision.types.Image(content=content)
@@ -138,4 +124,4 @@ if __name__ == "__main__":
     # })
     # print(response)
     # get_similar_products_uri('smart-tracer-250813', 'us-east1', 'hack6', 'toys',r'gs://labeled-images1234/dataset/Welchs_Fruit_Snacks/0.jpg')
-    get_similar_products_file(r'./dataset/Welchs_Fruit_Snacks/0.jpg')
+    get_similar_products_file()
