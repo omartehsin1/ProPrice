@@ -8,10 +8,7 @@ app.get("/:item", (req, res) => {
   res.json(hashList[item]);
 });
 
-
-app.listen(process.env.PORT || port, () =>
-  console.log("Gator app listening on port 3000!")
-);
+app.listen(process.env.PORT);
 
 // (async () => {
 //   const browser = await puppeteer.launch();
