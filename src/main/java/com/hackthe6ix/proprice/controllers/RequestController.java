@@ -74,6 +74,7 @@ public class RequestController {
         loadPicturesService.loadPictures().stream()
                 .filter(picture -> picture != null && !picture.isEmpty())
                 .forEach(pic -> {
+                    if(response.getEncoded_images() == null) response.setEncoded_images(new ArrayList<>());
                     response.getEncoded_images().add(pic);
                 });
 
