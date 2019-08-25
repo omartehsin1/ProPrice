@@ -1,14 +1,11 @@
 package com.hackthe6ix.proprice.service;
 
-import com.google.common.base.Charsets;
-import com.hackthe6ix.proprice.utils.CompressUtils;
 import com.hackthe6ix.proprice.utils.MongoConstants;
 import com.mongodb.*;
 import com.mongodb.client.FindIterable;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
 import org.bson.Document;
-import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
@@ -55,11 +52,7 @@ public class LoadPicturesService {
         iterable.forEach(new Block<Document>() {
             @Override
             public void apply(Document document) {
-                try {
-                    allImages.add(String.valueOf(CompressUtils.inflate(document.get("_image").toString().getBytes(Charsets.UTF_8))));
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
+                    allImages.add(document.get("_image").toString());
             }
         });
 
@@ -69,7 +62,7 @@ public class LoadPicturesService {
     public void savePicture(String encoded_image) throws IOException {
 
         Document doc = new Document("_id", UUID.randomUUID())
-                            .append("_image", CompressUtils.deflate(encoded_image.getBytes(Charsets.UTF_8)));
+                            .append("_image", encoded_image);
 
         imageCollection.insertOne(doc);
     }
