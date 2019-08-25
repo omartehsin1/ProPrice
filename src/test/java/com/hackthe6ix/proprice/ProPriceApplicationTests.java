@@ -98,6 +98,17 @@ public class ProPriceApplicationTests {
 	}
 
 	@Test
+	public void testSaveImage(){
+
+		try {
+			loadPicturesService.savePicture(getEncodedImage());
+			loadPicturesService.loadPictures().forEach(x->System.out.println("size:"+x+","));
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+
+	@Test
 	public void testMongo(){
 
 		loadPicturesService.loadPictures();
