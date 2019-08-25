@@ -20,5 +20,5 @@ Vision API Demo with Converse
 * [GCP Vision Product Search](https://cloud.google.com/vision/product-search/docs/) - Main search API that allowed for photo recognition through reverse photo search 
 * [GMP Places](https://developers.google.com/places/web-service/search) - Location/Map Services
 * [AWS MongoDB](https://docs.aws.amazon.com/quickstart/latest/mongodb/overview.html) - Open Source Database
-* [Macy's Search Phrase](https://developer.walmartlabs.com/docs/read/Search_API_IR_V2) - Keyword Search
-* [Best Buy Search Function](https://bestbuyapis.github.io/api-documentation/#keyword-search-function) - Keyword Search
+* [Macy's Search Phrase](https://developer.walmartlabs.com/docs/read/Search_API_IR_V2) - Product Keyword Search
+* [Best Buy Search Function](https://bestbuyapis.github.io/api-documentation/#keyword-search-function) - Product Keyword Search
